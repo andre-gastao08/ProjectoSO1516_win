@@ -12,6 +12,8 @@ import java.util.Random;
 import static java.lang.Thread.*;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -127,12 +129,29 @@ public class TerminalMultimodal implements Runnable {
 
     }
 
-    private class tempoDemoraAviaoPortaEmbarque extends TimerTask {
+    private class tempoDemoraAviaoPortaEmbarque extends TimerTask  {
 
         @Override
         public void run() {
+            
+            try {
+                tempoDemora.wait(30*1000);
+                System.out.println("aviões podem ficarem 30 minutes para limpez ou reaabasticimento");
+                for (Voo voos: listAvioes) {
+                if(voos.equals(voos.getNumeroPortaEmbarque()==1 || voos.equals(voos.getNumeroPortaEmbarque()==2)
+                && voos.equals(voos.getNumeroPortaEmbarque()==3))){
+                    voos.stop();
+                    System.out.println("porta de embarque ocupada até 30 min: "+voos.getNumeroPortaEmbarque() + "numero de voo está em espera: "+ voos.getNumeroVoo());
+                }    
+            }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(TerminalMultimodal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            }
 
         }
     }
 
-}
+
