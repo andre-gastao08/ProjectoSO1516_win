@@ -8,6 +8,8 @@ package imultimodal;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.StringTokenizer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -23,7 +25,7 @@ public class Voo extends Thread {
     private int numeroPortaEmbarque;
     private ArrayList<Passageiro> listaPassageiros;
     private LeitorFicheiros leitorFicheiro;
-    private int tempoDesembarque;
+    private int tempoDesembarquePassageiro;
     private int tempoRecolhaBagagem;
     private TerminalMultimodal terminal;
 
@@ -40,7 +42,7 @@ public class Voo extends Thread {
         this.numeroPortaEmbarque = (numeroPortaEmbarque <= 0 || numeroPortaEmbarque > 3) ? 1 : numeroPortaEmbarque;
         tempoRecolhaBagagem = rand.nextInt(21) + 20;
         int temp = rand.nextInt(41) + tempoRecolhaBagagem;
-        tempoDesembarque = (temp) < 60 ? temp : 60;
+        tempoDesembarquePassageiro = (temp) < 60 ? temp : 60;
     }
 
     public String getOrigem() {
@@ -59,8 +61,8 @@ public class Voo extends Thread {
         return listaPassageiros;
     }
 
-    public int getTempoDesembarque() {
-        return tempoDesembarque;
+    public int getTempoDesembarquePassageiro() {
+        return tempoDesembarquePassageiro;
     }
 
     public int getTempoRecolhaBagagem() {
@@ -73,7 +75,7 @@ public class Voo extends Thread {
         capacidade = listaPassageiros.stream().map((listPassageiro) -> listPassageiro.getNumeroPassageiro()).reduce(capacidade, Integer::sum);
         return capacidade;
     }
-    
+
     @Override
     public String toString() {
         String retvalue = "\nnumero de Voo:" + numeroVoo
@@ -81,15 +83,14 @@ public class Voo extends Thread {
                 + " \n hora de chegada " + horaChegada.toString()
                 + " \n numero da porta de embarque: " + numeroPortaEmbarque
                 + "\n Tempo de Recolha de bagagem: " + tempoRecolhaBagagem
-                + "\n Tempo de Desembarque: " + tempoDesembarque;
+                + "\n Tempo de Desembarque: " + tempoDesembarquePassageiro;
         retvalue = listaPassageiros.stream().map((passageiro) -> passageiro.toString()).reduce(retvalue, String::concat);
         return retvalue;
     }
 
     @Override
     public void run() {
+
     }
 
-    
-    
 }

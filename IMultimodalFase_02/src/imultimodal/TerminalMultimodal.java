@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import static java.lang.Thread.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -22,11 +24,14 @@ public class TerminalMultimodal implements Runnable {
     private ArrayList<Comboio> listaCombois;
     private ArrayList<Voo> listAvioes;
     private ArrayList<Passageiro> listaRecolhaPassageiro;
+    private Timer tempoDemora;
+
     public TerminalMultimodal() throws IOException {
 
         //this.listAutocarros = LeitorFicheiros.leitorFicheirosAutocarros("ficheiros/autocarros.txt");
         //this.listaCombois = LeitorFicheiros.leitorFicheiroComboios("ficheiros/comboios.txt");
         this.listAvioes = LeitorFicheiros.leitorFicheiroVoos("ficheiros/voos.txt");
+        tempoDemora = new Timer();
 
     }
 
@@ -36,9 +41,10 @@ public class TerminalMultimodal implements Runnable {
         int sum = 0;
 
         listAvioes.stream().map((passageiro) -> {
+            passageiro.start();
             try // dorme de 0 a 3 segundos, então coloca valor em Buffer
             {
-                sleep(passageiro.getTempoDesembarque()); // thread sleep
+                sleep(passageiro.getTempoDesembarquePassageiro()); // thread sleep
                 // configura valor no buffer
 
                 DescarregarPassageiroRecolhaBagagem(passageiro);
@@ -107,19 +113,26 @@ public class TerminalMultimodal implements Runnable {
     }
 
     public synchronized void tempAdicionalDesambarquePassageiroVoos(Voo passageiro) throws InterruptedException {
-
         if (passageiro.getNumeroPortaEmbarque() >= 1 || passageiro.getNumeroPortaEmbarque() <= 3) {
-            int tempoAdicional = rand.nextInt(30)+passageiro.getTempoDesembarque();
+            int tempoAdicional = rand.nextInt(30) + passageiro.getTempoDesembarquePassageiro();
             for (Voo voos : listAvioes) {
                 this.wait(tempoAdicional);
-                System.out.println("os aviões podem esperar ate ao minuto "+voos.getTempoDesembarque()+
-                        "para desembarcarem");
+                System.out.println("os aviões podem esperar ate ao minuto " + voos.getTempoDesembarquePassageiro()
+                        + "para desembarcarem");
             }
         } else {
 
             this.notifyAll();
         }
 
+    }
+
+    private class tempoDemoraAviaoPortaEmbarque extends TimerTask {
+
+        @Override
+        public void run() {
+
+        }
     }
 
 }

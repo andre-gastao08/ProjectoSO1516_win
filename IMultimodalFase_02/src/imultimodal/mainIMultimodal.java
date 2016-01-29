@@ -27,11 +27,10 @@ public class mainIMultimodal {
         ArrayList<Voo> listaVoos = new ArrayList<>();
         //voos = LeitorFicheiros.leitorFicheiroVoos("ficheiros/voos.txt");
         
-        TerminalMultimodal ter = new TerminalMultimodal();        
+        TerminalMultimodal ter = new TerminalMultimodal();
         Thread threadVoos= new Thread();
-        
         new Thread(ter).start();
-        
+       
         /*
         for (Autocarro listAutocarro : listAutocarros) {
             
