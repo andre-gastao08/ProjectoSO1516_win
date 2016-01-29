@@ -1,0 +1,36 @@
+5012
+Nova Iorque
+10:20
+1
+15;comboio;Aveiro
+20;comboio;Coimbra
+50;autocarro;Porto
+25;autocarro;Faro
+20;comboio;Setubal
+
+890
+Londres
+10:30
+2
+20;autocarro;Porto
+10;autocarro;Faro
+
+1027
+Dubai
+10:50
+3
+10;comboio;Aveiro
+20;comboio;Coimbra
+20;autocarro;Porto
+10;autocarro;Faro
+10;comboio;Setubal
+
+1050
+Madrid
+10:50
+1
+5;comboio;Aveiro
+20;comboio;Coimbra
+50;autocarro;Porto
+10; autocarro;Faro
+30;comboio;Setubal
