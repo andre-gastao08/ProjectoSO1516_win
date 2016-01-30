@@ -19,7 +19,7 @@ public class mainIMultimodal {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
-
+            
         ArrayList<Autocarro> listAutocarros = new ArrayList<>();
         //listAutocarros = LeitorFicheiros.leitorFicheirosAutocarros("ficheiros/autocarros.txt");
         ArrayList<Comboio> comboios = new ArrayList<>();

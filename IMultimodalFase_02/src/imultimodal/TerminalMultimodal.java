@@ -31,7 +31,7 @@ public class TerminalMultimodal implements Runnable {
 
         //this.listAutocarros = LeitorFicheiros.leitorFicheirosAutocarros("ficheiros/autocarros.txt");
         //this.listaCombois = LeitorFicheiros.leitorFicheiroComboios("ficheiros/comboios.txt");
-        listAvioes = LeitorFicheiros.leitorFicheiroVoos("ficheiros/voos.txt");
+        this.listAvioes = LeitorFicheiros.leitorFicheiroVoos("ficheiros/voos.txt");
         tempoDemora = new Timer();
         tempoDesembarquePassageiro = new Timer();
         tempoRecolhaBagagem = new Timer();
@@ -56,7 +56,7 @@ public class TerminalMultimodal implements Runnable {
         //tempoDemora.schedule(new TempoDemoraAviaoPortaEmbarque(), 30*1000);
     }
 
-    public synchronized ArrayList<Voo> DescarregaListaPassageirosVoo(Voo bufferPassageiro) {
+    public synchronized ArrayList<Voo> DescarregaListaPassageirosVoo(Passageiro bufferPassageiro) {
         try {
 
             System.out.println("\nlista de  Voos com passageiros proveniente de diferentes cidades... ");
@@ -78,7 +78,7 @@ public class TerminalMultimodal implements Runnable {
         while (!verificarCapacidadePassageiroAceita(passageiro)) {
             sleep(passageiro.getTempoRecolhaBagagem());
         }
-        for (Voo lisPassageiro : listAvioes) {
+        for (Passageiro lisPassageiro : passageiro.getPassageiros()) {
             DescarregaListaPassageirosVoo(lisPassageiro);
            
 
