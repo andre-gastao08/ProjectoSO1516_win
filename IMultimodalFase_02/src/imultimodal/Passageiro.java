@@ -13,14 +13,16 @@ public class Passageiro {
     private int numeroPassageiro;
     private TipoTransporte tipo;
     private String destino;
-   
 
     public Passageiro(int numeroPassageiro, TipoTransporte tipoMeio, String destino) {
 
-        this.numeroPassageiro = (this.numeroPassageiro > 0) ? this.numeroPassageiro : numeroPassageiro;
+        if (numeroPassageiro <= 200 && numeroPassageiro > 0) {
+            this.numeroPassageiro = numeroPassageiro;
+        } else {
+            System.out.println("numero: " + numeroPassageiro + " e maior que a capacidade maxima");
+        }
         this.tipo = tipoMeio;
         this.destino = destino;
-       
 
     }
 
@@ -33,9 +35,7 @@ public class Passageiro {
     }
 
     public void setNumeroPassageiro(int numeroPassageiro) {
-        if (numeroPassageiro <=0 || numeroPassageiro >200) {
-            this.numeroPassageiro = numeroPassageiro;
-        }
+        this.numeroPassageiro = numeroPassageiro;
     }
 
     public TipoTransporte getTipo() {

@@ -7,7 +7,7 @@ package imultimodal;
 
 /**
  *
- * @author Ac09930639
+ *  @author GastonJr
  */
 public enum TipoTransporte {
 

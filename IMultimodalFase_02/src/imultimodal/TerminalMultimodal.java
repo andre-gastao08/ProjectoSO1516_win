@@ -26,14 +26,15 @@ public class TerminalMultimodal implements Runnable {
     private ArrayList<Comboio> listaCombois;
     private ArrayList<Voo> listAvioes;
     private ArrayList<Passageiro> listaRecolhaPassageiro;
-    private Timer tempoDemora;
-
+    private Timer tempoDemora, tempoDesembarquePassageiro, tempoRecolhaBagagem;
     public TerminalMultimodal() throws IOException {
 
         //this.listAutocarros = LeitorFicheiros.leitorFicheirosAutocarros("ficheiros/autocarros.txt");
         //this.listaCombois = LeitorFicheiros.leitorFicheiroComboios("ficheiros/comboios.txt");
-        this.listAvioes = LeitorFicheiros.leitorFicheiroVoos("ficheiros/voos.txt");
+        listAvioes = LeitorFicheiros.leitorFicheiroVoos("ficheiros/voos.txt");
         tempoDemora = new Timer();
+        tempoDesembarquePassageiro = new Timer();
+        tempoRecolhaBagagem = new Timer();
 
     }
 
@@ -41,32 +42,24 @@ public class TerminalMultimodal implements Runnable {
     public void run() {
 
         int sum = 0;
-
-        listAvioes.stream().map((passageiro) -> {
-            passageiro.start();
-            try // dorme de 0 a 3 segundos, então coloca valor em Buffer
-            {
-                sleep(passageiro.getTempoDesembarquePassageiro()); // thread sleep
-                // configura valor no buffer
-
-                DescarregarPassageiroRecolhaBagagem(passageiro);
-            } // fim do try
-            // se a thread adormecida é interrompida, imprime rastreamento de pilha 
-            catch (InterruptedException exception) {
-
+        for (Voo voos : listAvioes) {
+            try {
+                sleep(voos.getTempoRecolhaBagagem());
+                ControlarPassageiroRecolhaBagagem(voos);
+                System.out.println(voos);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(TerminalMultimodal.class.getName()).log(Level.SEVERE, null, ex);
             }
-            return passageiro;
-        }).forEach((_item) -> {
-            System.out.printf("\n", "Producer done producing.",
-                    "Terminating Producer.");
-        }); // fim do método run
-
+            
+        }
+        
+        //tempoDemora.schedule(new TempoDemoraAviaoPortaEmbarque(), 30*1000);
     }
 
-    public synchronized ArrayList<Voo> carregarPassageirosTipoTransporte(Passageiro bufferPassageiro) {
+    public synchronized ArrayList<Voo> DescarregaListaPassageirosVoo(Voo bufferPassageiro) {
         try {
 
-            System.out.println("\nlista de passageiros a carregar, apos a teragem de voos  ");
+            System.out.println("\nlista de  Voos com passageiros proveniente de diferentes cidades... ");
             listAvioes = LeitorFicheiros.leitorFicheiroVoos("ficheiros/voos.txt");
             listAvioes.stream().forEach((passageiro) -> {
                 System.out.println(passageiro.toString());
@@ -81,20 +74,18 @@ public class TerminalMultimodal implements Runnable {
         return listAvioes;
     }
 
-    private synchronized void DescarregarPassageiroRecolhaBagagem(Voo passageiro) throws InterruptedException {
+    public synchronized void ControlarPassageiroRecolhaBagagem(Voo passageiro) throws InterruptedException {
         while (!verificarCapacidadePassageiroAceita(passageiro)) {
-            tempAdicionalDesambarquePassageiroVoos(passageiro);
+            sleep(passageiro.getTempoRecolhaBagagem());
+        }
+        for (Voo lisPassageiro : listAvioes) {
+            DescarregaListaPassageirosVoo(lisPassageiro);
+           
 
         }
-        sleep(passageiro.getTempoRecolhaBagagem());
-        for (Passageiro lisPassageiro : passageiro.getPassageiros()) {
 
-            carregarPassageirosTipoTransporte(lisPassageiro);
-
-        }
         this.notify();
         //notificar Autocarros ou comboios  disponiveis 
-
     }
 
     public boolean verificarCapacidadePassageiroAceita(Voo passageiro) {
@@ -114,44 +105,30 @@ public class TerminalMultimodal implements Runnable {
         return capacidade;
     }
 
-    public synchronized void tempAdicionalDesambarquePassageiroVoos(Voo passageiro) throws InterruptedException {
-        if (passageiro.getNumeroPortaEmbarque() >= 1 || passageiro.getNumeroPortaEmbarque() <= 3) {
-            int tempoAdicional = rand.nextInt(30) + passageiro.getTempoDesembarquePassageiro();
-            for (Voo voos : listAvioes) {
-                this.wait(tempoAdicional);
-                System.out.println("os aviões podem esperar ate ao minuto " + voos.getTempoDesembarquePassageiro()
-                        + "para desembarcarem");
-            }
-        } else {
-
-            this.notifyAll();
-        }
-
-    }
-
-    private class tempoDemoraAviaoPortaEmbarque extends TimerTask  {
+   /* public class TempoDemoraAviaoPortaEmbarque extends TimerTask {
 
         @Override
         public void run() {
-            
-            try {
-                tempoDemora.wait(30*1000);
-                System.out.println("aviões podem ficarem 30 minutes para limpez ou reaabasticimento");
-                for (Voo voos: listAvioes) {
-                if(voos.equals(voos.getNumeroPortaEmbarque()==1 || voos.equals(voos.getNumeroPortaEmbarque()==2)
-                && voos.equals(voos.getNumeroPortaEmbarque()==3))){
-                    voos.stop();
-                    System.out.println("porta de embarque ocupada até 30 min: "+voos.getNumeroPortaEmbarque() + "numero de voo está em espera: "+ voos.getNumeroVoo());
-                }    
+            tempoDemora.cancel();
+            for (int i = 0; i < listAvioes.size(); i++) {
+                listAvioes.get(i).stop();
+                System.out.println(listAvioes);
             }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(TerminalMultimodal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
+            System.out.println("\nfim de descarrega dos passageiros...");
+            System.out.println("\naviões podem ficarem 30 minutes para limpez ou reaabasticimento");
+
+            for (int i = 0; i < listAvioes.size(); i++) {
+                if (listAvioes.get(i).getNumeroPortaEmbarque() == 1 || (listAvioes.get(i).getNumeroPortaEmbarque() == 2
+                        || (listAvioes.get(i).getNumeroPortaEmbarque() == 3))) {
+                    listAvioes.get(i).resume();
+                    //duvida se o voo , tem horas diferente pois não ha como a porta esteja ocupada..
+                    System.out.println("porta ocupada numero: " + listAvioes.get(i).getNumeroPortaEmbarque()
+                            + " \t o voo em espera para reaabastecimento com numero: " + listAvioes.get(i).getNumeroVoo());
+
+                }
             }
 
         }
-    }
+    }*/
 
-
+}

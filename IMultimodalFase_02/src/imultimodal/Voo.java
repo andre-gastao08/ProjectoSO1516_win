@@ -71,7 +71,7 @@ public class Voo extends Thread {
 
     public int contadorPassageirChegado() {
 
-        int capacidade = 0;
+        int capacidade = 200;
         capacidade = listaPassageiros.stream().map((listPassageiro) -> listPassageiro.getNumeroPassageiro()).reduce(capacidade, Integer::sum);
         return capacidade;
     }
@@ -82,8 +82,8 @@ public class Voo extends Thread {
                 + "\n origem: " + origem
                 + " \n hora de chegada " + horaChegada.toString()
                 + " \n numero da porta de embarque: " + numeroPortaEmbarque
-                + "\n Tempo de Recolha de bagagem: " + tempoRecolhaBagagem
-                + "\n Tempo de Desembarque: " + tempoDesembarquePassageiro;
+                + "\n Tempo de Recolha de bagagem: " + tempoRecolhaBagagem+" min "
+                + "\n Tempo de Desembarque: " + tempoDesembarquePassageiro +" min ";
         retvalue = listaPassageiros.stream().map((passageiro) -> passageiro.toString()).reduce(retvalue, String::concat);
         return retvalue;
     }

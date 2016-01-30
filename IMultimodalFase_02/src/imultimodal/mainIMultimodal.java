@@ -29,7 +29,17 @@ public class mainIMultimodal {
         
         TerminalMultimodal ter = new TerminalMultimodal();
         Thread threadVoos= new Thread();
-        new Thread(ter).start();
+        //new Thread(ter).start();
+        
+        
+        
+        /*
+        
+       
+        
+       
+        
+        
        
         /*
         for (Autocarro listAutocarro : listAutocarros) {

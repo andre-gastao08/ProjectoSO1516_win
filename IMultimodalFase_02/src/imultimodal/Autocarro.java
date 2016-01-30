@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author Ac09930639
+ *  @author GastonJr
  */
 public class Autocarro  extends Thread{
 
