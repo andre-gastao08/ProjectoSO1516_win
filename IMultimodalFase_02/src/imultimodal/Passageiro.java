@@ -14,6 +14,11 @@ public class Passageiro {
     private TipoTransporte tipo;
     private String destino;
 
+    public Passageiro(int numeroPassageiro){
+        
+        this.numeroPassageiro=(numeroPassageiro<=200|| numeroPassageiro>0)? this.numeroPassageiro: numeroPassageiro;
+        
+    }
     public Passageiro(int numeroPassageiro, TipoTransporte tipoMeio, String destino) {
 
         if (numeroPassageiro <= 200 && numeroPassageiro > 0) {

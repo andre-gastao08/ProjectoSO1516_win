@@ -40,25 +40,25 @@ public class LeitorFicheiros extends Thread implements Runnable {
             String horaChegada = bufftexto.readLine();
             int numerLinhaEmbarque = Integer.parseInt(bufftexto.readLine());
             int numVaga = Integer.parseInt(bufftexto.readLine());
+            
             listaAutocarros.add(new Autocarro(NumeroCarreira, destino, horaPardida, horaChegada, numerLinhaEmbarque, numVaga));
-
         } while (bufftexto.readLine() != null);
         return listaAutocarros;
-
     }
 
     public static ArrayList<Comboio> leitorFicheiroComboios(String ficheiroComboio) throws IOException {
         listaComboios = new ArrayList<>();
         BufferedReader bufftexto = null;
         bufftexto = new BufferedReader(new FileReader(ficheiroComboio));
-        do {
 
+        do {
             int numeroComboio = Integer.parseInt(bufftexto.readLine());
             String destino = bufftexto.readLine();
             String horaPartida = bufftexto.readLine();
             String horaChagada = bufftexto.readLine();
             int numeroPlataforma = Integer.parseInt(bufftexto.readLine());
             int numeroLugarVaga = Integer.parseInt(bufftexto.readLine());
+
             listaComboios.add(new Comboio(numeroComboio, destino, horaPartida, horaChagada, numeroPlataforma, numeroLugarVaga));
         } while (bufftexto.readLine() != null);
 
@@ -82,9 +82,9 @@ public class LeitorFicheiros extends Thread implements Runnable {
                 ArrayList<Passageiro> passageiros = new ArrayList<>();
                 do {
 
-                    StringTokenizer st = new StringTokenizer(linha,";");
+                    StringTokenizer st = new StringTokenizer(linha, ";");
                     int numeroPassGrupo = Integer.parseInt(st.nextToken());
-                    TipoTransporte tipo= null;
+                    TipoTransporte tipo = null;
 
                     switch (st.nextToken()) {
                         default:;

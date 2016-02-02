@@ -8,8 +8,6 @@ package imultimodal;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.StringTokenizer;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  *
@@ -31,6 +29,13 @@ public class Voo extends Thread {
 
     public Voo() {
     }
+
+    public Voo(ArrayList<Passageiro> listaPassageiros) {
+        this.listaPassageiros = listaPassageiros;
+    }
+    
+    
+    
 
     public Voo(int numeroVoo, String origem, String horaChegada, int numeroPortaEmbarque,
             ArrayList<Passageiro> passageiros) {
@@ -71,7 +76,7 @@ public class Voo extends Thread {
 
     public int contadorPassageirChegado() {
 
-        int capacidade = 200;
+        int capacidade = 0;
         capacidade = listaPassageiros.stream().map((listPassageiro) -> listPassageiro.getNumeroPassageiro()).reduce(capacidade, Integer::sum);
         return capacidade;
     }
@@ -88,9 +93,5 @@ public class Voo extends Thread {
         return retvalue;
     }
 
-    @Override
-    public void run() {
-
-    }
 
 }
